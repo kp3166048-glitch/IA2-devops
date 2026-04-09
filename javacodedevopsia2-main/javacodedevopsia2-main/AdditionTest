@@ -1,0 +1,18 @@
+package karthikk;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+
+class Additiontest {
+
+	@Test
+	void test() {
+		Addition var=new Addition();
+		int as=4;
+		int cs=var.add(2,2);
+		assertEquals(as,cs);
+	}
+
+}
