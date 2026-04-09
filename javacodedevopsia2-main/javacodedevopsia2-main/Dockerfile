@@ -1,9 +1,14 @@
-FROM eclipse-temurin:17
+# Use Java 17 JDK
+FROM eclipse-temurin:17-jdk
 
+# Set working directory
 WORKDIR /app
 
-COPY App.java .
+# Copy Java file
+COPY Grade.java .
 
-RUN javac App.java
+# Compile Java
+RUN javac Grade.java
 
-CMD ["java", "App"]
+# Run the program
+CMD ["java", "Grade"]
