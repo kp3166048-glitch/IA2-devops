@@ -1,0 +1,950 @@
+IA1
+
+(1) Introduction to Git and Local Repository Management
+
+mkdir Git_Lab_Experiment1
+cd Git_Lab_Experiment1
+git init
+git config --global user.name "ABC"
+git config --global user.email your_email@example.com
+echo "This is my first Git experiment" > README.txt
+git status
+git add README.txt
+git commit -m "Initial commit"
+echo "Git tracks file changes" >> README.txt
+git status
+git add README.txt
+git commit -m "Updated README file"
+git log
+history -a
+
+(2)Working with Git Branches
+
+mkdir Git_Exp2
+cd Git_Exp2
+git init
+echo "this is initial content" > file1.txt
+git add file1.txt
+git commit -m "Initial commit"
+git branch feature-branch
+git checkout feature-branch
+echo "this is feature branch modification" > file1.txt
+git add file1.txt
+git commit -m "Added new feature in feature branch"
+git checkout master
+# Modify same file (to force conflict)
+echo "this is main branch modification" > file1.txt
+git add file1.txt
+git commit -m "Updated file in master branch"
+# Merge feature branch (conflict will happen)
+git merge feature-branch
+
+# -------- CONFLICT RESOLUTION --------
+# Open file and fix manually
+notepad file1.txt
+Inside file, you will see:
+<<<<<<< HEAD
+this is main branch modification
+=======
+this is feature branch modification
+>>>>>>> feature-branch
+Replace with (final resolved content):
+this is main branch modification
+this is feature branch modification
+# Save file, then continue
+git add file1.txt
+git commit -m "Resolved merge conflict"
+git log --oneline
+git branch -d feature-branch
+
+(3)GitHub Repository Creation and Push
+
+# One-time config (skip if already done)
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+#create repo in github
+cd Desktop
+git clone https://github.com/YourUsername/git-lab-demo.git
+cd git-lab-demo
+echo 'print("This file is from local machine")' > main.py
+git add main.py
+git commit -m "Add main.py file"
+git push -u origin main
+# (manually edit README.md on GitHub website)
+git pull origin main
+git status
+git log --oneline
+
+(4)GitHub Collaboration Using Pull Requests
+
+# Clone your repository (after creating it on GitHub with README)
+cd Desktop
+git clone https://github.com/YOUR_USERNAME/Git_PullRequests.git
+cd Git_PullRequests
+echo "This file is created in main branch" > file1.txt
+git add file1.txt
+git commit -m "Initial commit in main"
+git push origin main
+git checkout -b feature-1
+echo "This change is from feature-1 branch" >> file1.txt
+echo "Feature branch file" > feature.txt
+git add .
+git commit -m "Changes done in feature-1"
+git push origin feature-1
+
+# -------- NOW GO TO GITHUB --------
+# Open your repo → Click "Compare & Pull Request"
+# Base: main
+# Compare: feature-1
+# Click "Create Pull Request"
+# Click "Merge Pull Request" → Confirm
+
+git checkout main
+git pull origin main
+
+(5) Git Tagging and Release Creation
+
+mkdir Exp5
+cd Exp5
+git init
+echo "Git Tagging" > file1.txt
+git add file1.txt
+git commit -m "Initial commit"
+git tag -a v1.0 -m "Version 1.0"
+git tag
+# Add remote (GitHub repo must be created already)
+git remote add origin https://github.com/YOUR_USERNAME/Exp5.git
+git push -u origin main
+git push origin v1.0
+
+(6)Creation and Build of a Java Project Using Apache Maven
+
+mvn --version
+java --version
+cd Desktop
+mkdir maven-demo
+cd maven-demo
+mvn archetype:generate
+
+groupId: com.demo
+artifactId: demo
+version: 1.0-SNAPSHOT
+package: com.demo
+Y
+
+go to App.java replace with the following codes 
+-----Hello World-------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}
+--------Area of Square------------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        int side = 5;
+        System.out.println(side * side);
+    }
+}
+----------Simple Interest----------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        int p = 1000, t = 2, r = 5;
+        System.out.println((p * t * r) / 100);
+    }
+}
+----------Even or Odd--------------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        int n = 10;
+        if(n % 2 == 0)
+            System.out.println("Even");
+        else
+            System.out.println("Odd");
+    }
+}
+-----------String Length------------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        System.out.println("DevOps".length());
+    }
+}
+----------Prime or not------------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        int n = 7;
+        int count = 0;
+        for(int i = 1; i <= n; i++) {
+            if(n % i == 0)
+                count++;
+        }
+        if(count == 2)
+            System.out.println("Prime");
+        else
+            System.out.println("Not Prime");
+    }
+}
+------------------Alternate Prime Numbers (1 to 20)------------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        int count = 0;
+        for(int n = 2; n <= 20; n++) {
+            int c = 0;
+            for(int i = 1; i <= n; i++) {
+                if(n % i == 0)
+                    c++;
+            }
+            if(c == 2) {
+                count++;
+                if(count % 2 == 1)
+                    System.out.println(n);
+            }
+        }
+    }
+}
+---------------Bank Service Program-----------------------
+package com.demo;
+public class App {
+    public static void main(String[] args) {
+        int balance = 1000;
+        balance = balance + 500;
+        System.out.println("After deposit: " + balance);
+        balance = balance - 300;
+        System.out.println("After withdrawal: " + balance);
+        System.out.println("Final balance: " + balance);
+    }
+}
+----------------------------------------------------------
+cd demo
+mvn clean package
+cd target
+java -cp demo-1.0-SNAPSHOT.jar com.demo.App
+
+(7)Jenkins Freestyle Job
+
+new item
+freestyle project 
+In Source Code Management:
+Select Git
+Paste your repo URL:
+https://github.com/YOUR_USERNAME/YOUR_REPO.git
+Scroll → Build → Add build step
+Choose:
+👉 Execute Windows batch command
+echo Building project...
+Scroll → Post-build Actions
+Click → Add post-build action
+Select:
+Archive the artifacts
+In Files to archive:
+*.txt
+apply->save
+build Now
+
+(8)Jenkins Build Triggers
+
+Create a GitHub repository named Github_Bankservice
+Add a file named BankService.java with the following code:
+public class BankService {
+    public static void main(String[] args) {
+        int balance = 5000;
+        balance = balance + 500;
+        System.out.println("After deposit: " + balance);
+        balance = balance - 300;
+        System.out.println("After withdraw: " + balance);
+    }
+}
+
+Open Jenkins (http://localhost:8080) and login
+Create new item
+Name: GitHub_BankApplication
+Select: Freestyle Project → OK
+In Source Code Management:
+Select Git
+Repository URL:
+https://github.com/YOUR_USERNAME/Github_Bankservice.git
+Branch:  */main
+In Build Triggers:
+Tick "Poll SCM"
+* * * * *
+Tick "GitHub hook trigger for GITScm polling"
+In Build:
+Add build step → Execute Windows batch command
+
+javac BankService.java
+java BankService
+
+Save the job
+Click "Build Now" once and check console output
+
+Now go to GitHub
+Edit BankService.java (change any value, e.g., 500 → 700)
+Commit changes
+Wait 1 minute
+Jenkins will automatically trigger build
+
+(9)Jenkins Declarative Pipeline,(10)Jenkins Pipeline Visualization and Logs
+
+Create a new GitHub repository named Jenkins_Pipeline
+Add a file named Jenkinsfile with the following code:
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World from SCM!'
+                script {
+                    def sum = 15 + 27
+                    echo "15 + 27 = ${sum}"
+                }
+            }
+        }
+    }
+}
+
+Open Jenkins → http://localhost:8080
+Click New Item
+Enter name: pipeline_job
+Select Pipeline → OK
+In Pipeline section:
+Definition → Pipeline script from SCM
+SCM → Git
+Repository URL:
+https://github.com/YOUR_USERNAME/Jenkins_Pipeline.git
+Branch: */main
+Script Path:
+Jenkinsfile
+Click Save
+Click Build Now
+Click Console Output to view result
+
+for 10th do samething show the stages logs graphs etc
+
+Experiment 11:
+(1) Using Eclipse:
+package Demo_java;
+
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+
+    public int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public int divide(int a, int b) {
+        return a / b;
+    }
+}
+---------------------------------------------------
+
+package Demo_java;
+
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+public class CalculatorTest {
+
+    Calculator calc = new Calculator();
+
+    @Test
+    public void testAdd() {
+        assertEquals(5, calc.add(2, 3));
+    }
+
+    @Test
+    public void testSubtract() {
+        assertEquals(2, calc.subtract(5, 3));
+    }
+
+    @Test
+    public void testMultiply() {
+        assertEquals(6, calc.multiply(2, 3));
+    }
+
+    @Test
+    public void testDivide() {
+        assertEquals(2, calc.divide(6, 3));
+    }
+}
+---------------------------------------------------------------------------------------------------------------------------------
+(2) Using VS code:
+https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.10.1/junit-platform-console-standalone-1.10.1.jar
+
+javac -cp ".;lib\junit-platform-console-standalone-1.10.1.jar" -d bin Calculator.java CalculatorTest.java
+
+java -jar lib\junit-platform-console-standalone-1.10.1.jar --class-path bin --scan-class-path --details=tree
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Experminet 12:
+java --version
+mvn --version
+mvn archetype:generate
+mvn package
+mvn test
+---------------------------------------------------------------------------------------------------------------------------------------------------
+Experiment 13:
+git config --global user.name priyanka
+git config --global user.email "priyankasvpriyankasv@gmail.com
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/Priya178-star/git_demo1.git
+git push -u origin main
+
+------------------------------------------------------------------------------------------------------------------------------------------
+Experiment 14: Test Coverage using JaCoCo
+Objective
+To measure software code quality by evaluating test coverage using the JaCoCo tool.
+Tools Required
+•	Java (JDK 8 or above) 
+•	Maven/Gradle 
+•	IDE (Eclipse / IntelliJ IDEA) 
+•	JaCoCo Plugin 
+JaCoCo (Java Code Coverage) is a popular library used to measure how much of your code is tested by unit tests. It provides metrics such as:
+•	Line Coverage 
+•	Branch Coverage 
+•	Method Coverage 
+•	Class Coverage 
+Higher coverage generally indicates better-tested and more reliable code.
+Steps to Use JaCoCo with Maven
+Step 1: Create a Simple Java Project
+Create a basic Maven project with a sample class.
+Calculator.java
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int divide(int a, int b) {
+        if (b == 0) {
+            throw new IllegalArgumentException("Cannot divide by zero");
+        }
+        return a / b;
+    }
+}
+Step 2: Write JUnit Test Cases
+Create test cases for the above class.
+CalculatorTest.java
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class CalculatorTest {
+
+    Calculator calc = new Calculator();
+
+    @Test
+    public void testAdd() {
+        assertEquals(5, calc.add(2, 3));
+    }
+
+    @Test
+    public void testDivide() {
+        assertEquals(2, calc.divide(4, 2));
+    }
+}
+Step 3: Add JaCoCo Plugin in pom.xml
+Add the JaCoCo plugin inside the <build> section.
+<build>
+   <plugins>
+        <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.11</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>prepare-agent</goal>
+                    </goals>
+                </execution>
+
+                <execution>
+                    <id>report</id>
+                    <phase>test</phase>
+                    <goals>
+                        <goal>report</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+Step 4: Run Tests and Generate Coverage Report
+Open terminal in the project directory and run:
+mvn clean test
+Step 5: View the Coverage Report
+After execution, JaCoCo generates the report at:
+target/site/jacoco/index.html
+Open index.html in a browser to see:
+•	Instruction coverage
+•	Line coverage
+•	Branch coverage
+•	Method coverage
+•	Class coverage
+Example Output
+If only add() and normal divide() are tested:
+•	add() → fully covered
+•	divide() → partially covered (exception branch not tested)
+Coverage might show:
+•	Line coverage: 80–90%
+•	Branch coverage: 50%
+Step 6: Improve Coverage
+Add a test for the exception case:
+@Test
+public void testDivideByZero() {
+    assertThrows(IllegalArgumentException.class, () -> {
+        calc.divide(4, 0);
+    });
+}
+Run again:
+mvn clean test
+
+
+
+Update the Calculator.java and CalculatorTest.java as follows (Complete Code)
+Calculator.java
+package SimpleCalculator;
+
+	public class Calculator {
+
+	    public int add(int a, int b) {
+	        return a + b;
+	    }
+
+	    public int subtract(int a, int b) {
+	        return a - b;
+	    }
+
+	    public int multiply(int a, int b) {
+	        return a * b;
+	    }
+
+	    public int divide(int a, int b) {
+	        if (b == 0) {
+	            throw new ArithmeticException("Division by zero is not allowed.");
+	        }
+	        return a / b;
+	    }
+	}
+
+
+CalculatorTest.java
+package SimpleCalculator;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+class CalculatorTest {
+
+	 Calculator cal=new Calculator();
+    @Test
+    public void testAdd() {
+        int result = cal.add(2, 3);
+        assertEquals(5, result);
+    }
+    @Test
+    public void testSubtract() {
+        int result = cal.subtract(5, 2);
+        assertEquals(3, result);
+    }
+    @Test
+    public void testMultiply() {
+        int result = cal.multiply(4, 5);
+        assertEquals(20, result);
+    }
+    @Test
+    public void testDivide() {
+        int result = cal.divide(10, 2);
+        assertEquals(5, result);
+    }
+    @Test
+    void testDivisionByZero() {
+        assertThrows(ArithmeticException.class, () -> {
+            cal.divide(10, 0);
+        });
+}
+}
+Commands:
+Mvn clean test
+Mvn clean verify
+------------------------------------------------------------------------------------------------------------------------------------
+Experiment 15:
+docker --version
+wsl --update
+docker pull hello-world
+docker run hello-world
+docker pull caddy
+docker run caddy
+docker ps
+docker ps -a
+docker rm <container-id>
+docker images
+docker rmi hello-world
+----------------------------------------------------------------------------------------------------------------------------------------
+Experiment 16:
+-Open vs code install Docker Extension pack 
+-Open Desktop create a 'DockerProject' folder inside it create another folder 'java-image'
+-inside java image create Dockerfile and sample.java files
+-Sample.java
+class Sample{
+    public static void main(String[] args){
+        System.out.println("Hello world from Docker");
+}
+}
+
+-Dockerfile
+FROM eclipse-temurin:17
+
+WORKDIR /app
+
+COPY Sample.java .
+
+RUN javac Sample.java
+
+CMD ["java", "Sample"]
+
+-Open this folder and terminal 
+>>cd java-image
+>>javac Sample.java
+>>java Sample
+
+-Open CMD and run this
+>>docker build -t my-java-app
+>>docker run my-java-app
+-------------------------------------------------------------------------------------------------------------------------------
+Experiment 17:
+>> docker --version
+>> docker ps -a
+>> docker container prune
+>> docker ps -a
+>> docker pull nginx
+>> docker login
+>>docker images
+>>docker run nginx
+>>docker run -p 8082:80 -d <image-id>
+-Open http://localhost:8082
+-----------------------------------------------------------------------------------------------------------------------------------
+Experiment 18: Docker Image Push to Docker Hub
+
+Objective: To understand Docker registries and learn how to push a Docker image to Docker Hub for sharing and deployment.
+
+
+Step1. Create Dockerfile and Java File and save both in a folder by the name Docker-Java
+ 
+Dockerfile
+
+FROM eclipse-temurin:17-jdk
+WORKDIR /app
+COPY . /app
+RUN javac Grade.java
+CMD ["java", "Grade"]
+
+Java File
+
+import java.util.Scanner;
+
+public class Grade{
+
+  // Returns a letter grade based on the average
+  static char gradeFunction(double avg) {
+    if (avg >= 90) return 'A';
+    else if (avg >= 80) return 'B';
+    else if (avg >= 70) return 'C';
+    else if (avg >= 60) return 'D';
+    else return 'F';
+  }
+
+  public static void main(String[] args) {
+    Scanner scanner = new Scanner(System.in);
+
+    System.out.print("How many grades (1 to 5)? ");
+    int count = scanner.nextInt();
+
+    // Validate the input count
+    if (count < 1 || count > 5) {
+      System.out.println("Invalid number. You must enter between 1 and 5 grades.");
+      scanner.close();
+      return; // Exit
+    }
+
+    double sum = 0.0;
+
+    // Read each grade
+    for (int i = 1; i <= count; i++) {
+      System.out.print("Enter grade " + i + ": ");
+      double grade = scanner.nextDouble();
+      sum += grade;
+    }
+
+    double avg = sum / count;
+    System.out.println("Average: " + avg);
+    System.out.println("Letter grade: " + gradeFunction(avg));
+
+    scanner.close();
+  }
+}
+
+Build the Docker image:
+docker build -t java-app .
+Step 2. Login to Docker Hub
+docker login
+Enter your Docker Hub username and password
+Step 3: Tag the Docker Image
+Tag the image with your Docker Hub repository:
+docker tag java-app yourusername/java-app:v1
+
+Step 4: Push Image to Docker Hub
+docker push yourusername/java-app:v1
+
+Step 5: Verify on Docker Hub
+•	Go to your Docker Hub account 
+•	Check repository → Image should be uploaded
+
+
+Experiment 19: Jenkins and Docker Integration
+
+Objective: To implement Continuous Integration (CI) by integrating Jenkins with Docker for automated image building.
+
+Step 1: Create a Jenkins Pipeline Job
+•	Go to Jenkins Dashboard 
+•	Click New Item → Pipeline → OK
+Step 2: Add Pipeline Script
+pipeline {
+    agent any
+    stages {
+        stage('Clone Code') {
+            steps {
+                git 'https://github.com/your-repo/sample-app.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t my-app .'
+            }
+        }
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d my-app'
+            }
+        }
+    }
+}
+Step 5: Build the Pipeline
+•	Click Build Now 
+•	Monitor in Console Output
+Step 6: Verify Execution
+Check Docker images:
+docker images
+Check running containers:
+docker ps
+
+
+OR
+
+1. Create the job in jenkins by the name Docker Integration with jenkins
+
+2. Configure the settings like the other jenkins programs
+
+3. Create Repository in github and place the Dockerfile and Java File
+
+4. Write the following Commands in Execute Windows batch command Option in jenkins
+
+docker build -t java-app .
+docker run -d -t java-app
+
+5. Save and apply 
+
+6. Once build is success check the image created in docker desktop
+
+
+Experiment 20: Simple End-to-End CI/CD Pipeline
+Objective: To understand the DevOps lifecycle by building a simple end-to-end CI/CD pipeline using Jenkins and Docker.
+Prerequisites
+•	Git repository with application code 
+•	Jenkins installed and configured 
+•	Docker installed 
+•	Docker Hub account (optional for deployment) 
+________________________________________
+Tools Used
+•	Jenkins 
+•	Docker 
+•	Git 
+•	Docker Hub 
+________________________________________
+DevOps Lifecycle Stages Covered
+1.	Code → Developer pushes code to Git 
+2.	Build → Jenkins builds the project 
+3.	Test → (Optional) Run tests 
+4.	Package → Create Docker image 
+5.	Deploy → Run container 
+6.	Monitor → Check logs/output 
+________________________________________
+Procedure / Tasks
+Step 1: Create a Git Repository
+•	Add application code 
+•	Include a Dockerfile 
+•	Include a Jenkinsfile
+•	Include pom.xml
+jenkins-tomcat-maven-tested	
+│
+├── src/main/java/com/bnmit/HelloServlet.java
+├── src/main/webapp/index.jsp
+├── src/main/webapp/WEB-INF/web.xml
+├── pom.xml
+├── Jenkinsfile
+└── README.txt
+•	Java Servlets code (HelloServlet.java)
+package com.example;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class HelloServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
+                         throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<h2>Deployment Successful!</h2>");
+        out.println("<h3>GitHub: &rarr; Jenkins: &rarr; Docker: &rarr; Tomcat</h3>");
+    }
+}
+Web.xml
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+version="3.1">
+<servlet>
+<servlet-name>HelloServlet</servlet-name>
+<servlet-class>com.example.HelloServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>HelloServlet</servlet-name>
+<url-pattern>/hello</url-pattern>
+</servlet-mapping>
+</web-app>
+
+Index.jsp
+<html>
+<head>
+<title>CI/CD Demo</title>
+</head>
+<body>
+<h1>Welcome to CI/CD Pipeline Demo</h1>
+<a href="hello">Click Here</a>
+</body>
+</html>
+HelloServletTest.java
+package com.example;
+import static org.mockito.Mockito.*;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.Test;
+public class HelloServletTest {
+    @Test
+    void testDoGet() throws Exception {
+        // Create servlet instance
+        HelloServlet servlet = new HelloServlet();
+        // Mock request and response
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        // Capture output
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        when(response.getWriter()).thenReturn(writer);
+        // Call servlet method
+        servlet.doGet(request, response);
+        writer.flush();
+        String result = stringWriter.toString();
+        // Assertions
+        assert(result.contains("Deployment Successful!"));
+        assert(result.contains("GitHub"));
+        assert(result.contains("Jenkins"));
+        assert(result.contains("Docker"));
+        assert(result.contains("Tomcat"));
+        // Verify response type set
+        verify(response).setContentType("text/html");
+    }
+}
+________________________________________
+Step 2: Create Freestyle Job
+•	Open Jenkins Dashboard 
+•	Click New Item → Freestyle Project 
+________________________________________
+Step 3: Configure Pipeline Script (Jenkins File) in Github
+✅ Complete CI/CD Pipeline 
+pipeline {
+    agent any
+    tools {
+        maven 'mymaven'
+        jdk 'myjdk'
+    }
+    environment {
+        IMAGE_NAME = "sample-webapp"
+        CONTAINER_NAME = "sample-webapp-container"
+    }
+    stages {
+        stage('Clone') {
+            steps {
+                echo 'Cloning repository'
+            }
+        }
+
+        stage('Build WAR') {
+            steps {
+                bat 'mvn clean package'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t  sample-webapp .'
+            }
+        }
+        stage('Stop Old Container') {
+            steps {
+                bat 'docker stop sample-webapp-container || exit 0'
+                bat 'docker rm sample-webapp-container || exit 0'
+            }
+        }
+        stage('Run Container') {
+            steps {
+                bat 'docker run -d -p 8087:8087 --name  sample-webapp-container sample-webapp '
+            }
+        }
+
+    }
+}
+Step 4: Run the Pipeline
+•	Click Build Now 
+•	Monitor in Console Output 
+________________________________________
+Step 5: Verify Deployment
+Check running containers:
+docker ps
+Access application using two ways:
+1.download the generated war file from jenkins and deploy it to tomcat server 
+Install tomcat
+Then access it using localhost
+http://localhost:8087
+
+go to Manager App in tomcat
+
+Click on WAR file to deploy Choose file and select the war file downloaded
+Click on Deploy
+ 
+ 
+
+2. Access using Localhost
+http://localhost:8087
